@@ -17,7 +17,7 @@ class TablesSessionsController {
         .orderBy("opened_at", "desc")
         .first()
 
-      if(session && !session.closed_at) {
+      if (session && !session.closed_at) {
         throw new AppError("this table is already open")
       }
 
@@ -38,6 +38,21 @@ class TablesSessionsController {
         .orderBy("closed_at")
 
       return response.json(sessions)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async update(request: Request, response: Response, next: NextFunction) {
+    try {
+      const id = z
+        .string()
+        .transform((value) => Number(value))
+        .refine((value) => !isNaN(value), { message: "id must be a number" })
+        .parse(request.params.id)
+
+      
+      return response.json()
     } catch (error) {
       next(error)
     }
