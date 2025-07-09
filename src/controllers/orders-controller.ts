@@ -64,7 +64,9 @@ class OrdersController {
           "orders.updated_at"
         )
         .join("products", "products.id", "orders.product_id")
-        .where({ table_session_id })
+        .join("tables_sessions", "tables_sessions.id", "orders.table_session_id")
+        .where("orders.table_session_id", table_session_id)
+        // .whereNull("tables_sessions.closed_at")
         .orderBy("orders.created_at", "desc")
 
       return response.json(order)
