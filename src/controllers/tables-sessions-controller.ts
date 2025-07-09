@@ -46,14 +46,14 @@ class TablesSessionsController {
 
   async update(request: Request, response: Response, next: NextFunction) {
     try {
-      const table_id = z
+      const id = z
         .string()
         .transform((value) => Number(value))
         .refine((value) => !isNaN(value), { message: "id must be a number" })
         .parse(request.params.table_id)
 
       const session = await knex<TablesSessionsRepository>("tables_sessions")
-        .where({ table_id })
+        .where({ id })
         .first()
 
       if (!session) {
@@ -68,7 +68,7 @@ class TablesSessionsController {
         .update({
           closed_at: knex.fn.now()
         })
-        .where({ table_id })
+        .where({ id })
 
       return response.json()
     } catch (error) {
